@@ -33,7 +33,7 @@ let wordArray = [
 
 const Main = () => {
   const { id: player } = useParams();
-  const inputRef = useRef(null);
+  const inputRef = useRef<null | HTMLTextAreaElement>(null);
   const { toast } = useToast();
   const [error, setError] = useState(false);
   const [timer, setTimer] = useState(0);
@@ -144,7 +144,7 @@ const Main = () => {
     setCounter(counter);
     setGameStatus(true);
     setWord(wordArray[counter]);
-    inputRef.current.focus();
+    inputRef?.current?.focus();
     // const timeout = setTimeout(() => {
     //   setTime(time => time - 1);
     // }, 100);
