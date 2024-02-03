@@ -8,16 +8,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
+  const {replace} = useRouter()
   const [username, setUsername] = useState("");
   const [category, setCategory] = useState("");
   const config = genConfig(username);
   const change = (i: string) => {
     setCategory(i);
   };
+
+  const handleSubmit = (e:React.FormEvent) => {
+    e.preventDefault()
+    if (category === "Solo") {
+      replace(`/game/single/${username}`)
+    }
+  }
+
   return (
-    <form className="flex flex-col items-center justify-center h-[90vh] gap-5">
+    <form onSubmit={handleSubmit} className="flex flex-col items-center justify-center h-[90vh] gap-5">
       <Avatar style={{ width: "4rem", height: "4rem" }} {...config} />
       <input
         required

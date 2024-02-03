@@ -5,6 +5,7 @@ import Avatar, { genConfig } from "react-nice-avatar";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
 import SingleTimer from "@/components/SingleTimer";
+import { useParams } from "next/navigation";
 
 // type Props = {};
 let wordArray = [
@@ -14,7 +15,7 @@ let wordArray = [
   "dog",
   "elephant",
   "flower",
-  "guitar",
+  "guilt",
   "happy",
   "island",
   "jazz",
@@ -30,19 +31,20 @@ let wordArray = [
   "tiger",
 ];
 
-const Page = () => {
+const Main = () => {
+  const {id:player} = useParams()
   const { toast } = useToast();
   const [error, setError] = useState(false);
   const [timer, setTimer] = useState(0);
   const [time, setTime] = useState(0);
   const [counter, setCounter] = React.useState(0);
-  const [word, setWord] = useState(wordArray[counter]);
+  const [word, setWord] = useState("Welcome");
   const [typedWord, setTypedWord] = useState("");
   const [arrWord, setArrWord] = useState<string[]>([]);
   const [arrTypedWord, setTypedArrWord] = useState<string[]>([]);
   const [gameStatus, setGameStatus] = useState(false);
   const [score, setScore] = useState(0);
-
+  console.log(wordArray[counter])
   const myArray = useMemo(() => {
     let newArr = word.split("");
     setArrWord(newArr);
@@ -154,14 +156,14 @@ const Page = () => {
     setGameStatus(false);
   };
 
-  const config = genConfig("demon");
+  const config = genConfig(player as string);
   return (
     <main className="flex h-[90vh] p-5 flex-col">
-      <div className="flex items-center gap-4">
+      <div className="flex gap-2 flex-col md:flex-row  items-center md:gap-4">
         <div className="flex border gap-2 p-2 rounded-md items-center">
           <Avatar style={{ width: "2rem", height: "2rem" }} {...config} />
-          <p className="text-sm">username</p>
-          <p className="text-base font-bold">{score}:10</p>
+          <p className="text-sm">{player}</p>
+          <p className="text-base font-bold">{score}:{counter}</p>
         </div>
         <div className="flex border p-2 gap-2 rounded-md items-center">
           <p>Timer: {time}</p>
@@ -183,15 +185,16 @@ const Page = () => {
           onChange={(e) => changeWord(e.currentTarget.value)}
           className={`${
             error ? "border-red-700 border-4 rounded-sm" : ""
-          } border py-2 px-4 w-64 min-h-36 outline-none`}
+          } border py-2 px-4 w-64 min-h-20 outline-none`}
           placeholder="Type the word here"
         />
       </div>
+      <div className="flex justify-center">
       {gameStatus === false ? (
         <button
           onClick={startGame}
           className={`${
-            timer < 1 ? "opacity-10 pointer-events-none" : ""
+            timer < 1 ? "opacity-10 mt-5 pointer-events-none" : ""
           } border animate-pulse font-bold w-36 rounded-sm text-sm py-2 px-4`}
         >
           Start
@@ -199,13 +202,14 @@ const Page = () => {
       ) : (
         <button
           onClick={StopGame}
-          className="border bg-red-800 text-white font-bold w-36 rounded-sm text-sm py-2 px-4"
+          className="border bg-red-800 mt-5 text-white font-bold w-36 rounded-sm text-sm py-2 px-4"
         >
           Stop
         </button>
       )}
+      </div>
     </main>
   );
 };
 
-export default Page;
+export default Main;

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -8,7 +9,11 @@ export default function Home() {
         Challenge your typing skills and compete against others in a race to the
         keyboard at our interactive typing speed test arena!
       </p>
-      <button className="border hover:bg-black hover:text-white w-36 rounded-md py-2 px-4 font-bold">Start Game</button>
+      <Link href="/onboard">
+        <button className="border hover:bg-black hover:text-white w-36 rounded-md py-2 px-4 font-bold">
+          Start Game
+        </button>
+      </Link>
     </main>
   );
 }
