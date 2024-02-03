@@ -10,7 +10,7 @@ import { useParams } from "next/navigation";
 // type Props = {};
 let wordArray = [
   "apple",
-  "banana",
+  "bananas",
   "carrot",
   "dog",
   "elephant",
@@ -38,13 +38,13 @@ const Main = () => {
   const [timer, setTimer] = useState(0);
   const [time, setTime] = useState(0);
   const [counter, setCounter] = React.useState(0);
-  const [word, setWord] = useState("Welcome");
+  const [word, setWord] = useState(wordArray[counter]);
   const [typedWord, setTypedWord] = useState("");
   const [arrWord, setArrWord] = useState<string[]>([]);
   const [arrTypedWord, setTypedArrWord] = useState<string[]>([]);
   const [gameStatus, setGameStatus] = useState(false);
   const [score, setScore] = useState(0);
-  console.log(wordArray[counter])
+  console.log(wordArray[counter],word,counter)
   const myArray = useMemo(() => {
     let newArr = word.split("");
     setArrWord(newArr);
@@ -67,7 +67,7 @@ const Main = () => {
       setTime(timer !== 0 ? timer : 0);
       setCounter(0);
       setScore(0)
-      setWord("");
+      setWord(wordArray[counter]);
       setTypedWord("");
       setTypedArrWord([]);
     }
@@ -81,6 +81,7 @@ const Main = () => {
     if (counter === 10) {
       StopGame()
     }
+    setWord(wordArray[counter])
   }, [counter]);
 
   useEffect(() => {
@@ -139,7 +140,7 @@ const Main = () => {
     }
   }, [arrTypedWord]); //eslint-disable-line
   const startGame = () => {
-    setCounter((counter) => counter + 1);
+    setCounter(counter);
     setGameStatus(true);
     setWord(wordArray[counter]);
     // const timeout = setTimeout(() => {
@@ -194,8 +195,8 @@ const Main = () => {
         <button
           onClick={startGame}
           className={`${
-            timer < 1 ? "opacity-10 mt-5 pointer-events-none" : ""
-          } border animate-pulse font-bold w-36 rounded-sm text-sm py-2 px-4`}
+            timer < 1 ? "opacity-10pointer-events-none" : ""
+          } border animate-pulse mt-5 font-bold w-36 rounded-sm text-sm py-2 px-4`}
         >
           Start
         </button>
