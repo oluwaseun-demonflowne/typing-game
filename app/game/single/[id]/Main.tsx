@@ -47,7 +47,7 @@ const Main = () => {
   const [score, setScore] = useState(0);
   console.log(wordArray[counter], word, counter);
   const myArray = useMemo(() => {
-    let newArr = word.split("");
+    let newArr = word?.split("")!;
     setArrWord(newArr);
   }, [word]);
 
