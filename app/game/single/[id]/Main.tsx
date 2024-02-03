@@ -1,6 +1,6 @@
 "use client";
 import Waiting from "@/components/Waiting";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Avatar, { genConfig } from "react-nice-avatar";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
@@ -32,7 +32,8 @@ let wordArray = [
 ];
 
 const Main = () => {
-  const {id:player} = useParams()
+  const { id: player } = useParams();
+  const inputRef = useRef(null);
   const { toast } = useToast();
   const [error, setError] = useState(false);
   const [timer, setTimer] = useState(0);
@@ -44,7 +45,7 @@ const Main = () => {
   const [arrTypedWord, setTypedArrWord] = useState<string[]>([]);
   const [gameStatus, setGameStatus] = useState(false);
   const [score, setScore] = useState(0);
-  console.log(wordArray[counter],word,counter)
+  console.log(wordArray[counter], word, counter);
   const myArray = useMemo(() => {
     let newArr = word.split("");
     setArrWord(newArr);
@@ -66,7 +67,7 @@ const Main = () => {
     if (!gameStatus) {
       setTime(timer !== 0 ? timer : 0);
       setCounter(0);
-      setScore(0)
+      setScore(0);
       setWord(wordArray[counter]);
       setTypedWord("");
       setTypedArrWord([]);
@@ -79,9 +80,9 @@ const Main = () => {
 
   useEffect(() => {
     if (counter === 10) {
-      StopGame()
+      StopGame();
     }
-    setWord(wordArray[counter])
+    setWord(wordArray[counter]);
   }, [counter]);
 
   useEffect(() => {
@@ -143,6 +144,7 @@ const Main = () => {
     setCounter(counter);
     setGameStatus(true);
     setWord(wordArray[counter]);
+    inputRef.current.focus();
     // const timeout = setTimeout(() => {
     //   setTime(time => time - 1);
     // }, 100);
@@ -164,7 +166,9 @@ const Main = () => {
         <div className="flex border gap-2 p-2 rounded-md items-center">
           <Avatar style={{ width: "2rem", height: "2rem" }} {...config} />
           <p className="text-sm">{player}</p>
-          <p className="text-base font-bold">{score}:{counter}</p>
+          <p className="text-base font-bold">
+            {score}:{counter}
+          </p>
         </div>
         <div className="flex border p-2 gap-2 rounded-md items-center">
           <p>Timer: {time}</p>
@@ -180,6 +184,7 @@ const Main = () => {
         <p className="text-sm">Type the text below</p>
         <h1 className="text-4xl ">{word}</h1>
         <textarea
+          ref={inputRef}
           value={typedWord}
           // disabled={error}
           // onChange={(e) => setTypedWord(e.currentTarget.value)}
@@ -191,23 +196,23 @@ const Main = () => {
         />
       </div>
       <div className="flex justify-center">
-      {gameStatus === false ? (
-        <button
-          onClick={startGame}
-          className={`${
-            timer < 1 ? "opacity-10pointer-events-none" : ""
-          } border animate-pulse mt-5 font-bold w-36 rounded-sm text-sm py-2 px-4`}
-        >
-          Start
-        </button>
-      ) : (
-        <button
-          onClick={StopGame}
-          className="border bg-red-800 mt-5 text-white font-bold w-36 rounded-sm text-sm py-2 px-4"
-        >
-          Stop
-        </button>
-      )}
+        {gameStatus === false ? (
+          <button
+            onClick={startGame}
+            className={`${
+              timer < 1 ? "opacity-10pointer-events-none" : ""
+            } border animate-pulse mt-5 font-bold w-36 rounded-sm text-sm py-2 px-4`}
+          >
+            Start
+          </button>
+        ) : (
+          <button
+            onClick={StopGame}
+            className="border bg-red-800 mt-5 text-white font-bold w-36 rounded-sm text-sm py-2 px-4"
+          >
+            Stop
+          </button>
+        )}
       </div>
     </main>
   );
