@@ -41,7 +41,7 @@ const Page = () => {
   const [arrWord, setArrWord] = useState<string[]>([]);
   const [arrTypedWord, setTypedArrWord] = useState<string[]>([]);
   const [gameStatus, setGameStatus] = useState(false);
-  const [score , setScore] = useState(0)
+  const [score, setScore] = useState(0);
 
   const myArray = useMemo(() => {
     let newArr = word.split("");
@@ -61,10 +61,25 @@ const Page = () => {
       }, 1000); // decrease time every second
     }
 
+    if (!gameStatus) {
+      setTime(timer !== 0 ? timer : 0);
+      setCounter(0);
+      setScore(0)
+      setWord("");
+      setTypedWord("");
+      setTypedArrWord([]);
+    }
+
     return () => {
       clearInterval(interval as number); // clear the interval when the component unmounts or when the game is over
     };
   }, [gameStatus]);
+
+  useEffect(() => {
+    if (counter === 10) {
+      StopGame()
+    }
+  }, [counter]);
 
   useEffect(() => {
     if (time === 0) {
@@ -80,11 +95,10 @@ const Page = () => {
 
   useEffect(() => {
     if (typedWord === word) {
-      
       // setTimeout(() => {
       //   setTime(timer - 1);
       // }, 1000);
-      setScore(prevScore => prevScore + 1)
+      setScore((prevScore) => prevScore + 1);
       setTime(timer);
       setCounter((counter) => counter + 1);
       setWord(wordArray[counter + 1]);
@@ -125,6 +139,7 @@ const Page = () => {
   const startGame = () => {
     setCounter((counter) => counter + 1);
     setGameStatus(true);
+    setWord(wordArray[counter]);
     // const timeout = setTimeout(() => {
     //   setTime(time => time - 1);
     // }, 100);
@@ -132,10 +147,10 @@ const Page = () => {
   const StopGame = () => {
     setCounter(0);
     toast({
-        title: "Game over",
-        description: `You had ${score} out of 10`,
-        action: <ToastAction altText="Close dialog">Close</ToastAction>,
-      });
+      title: "Game over",
+      description: `You had ${score} out of 10`,
+      action: <ToastAction altText="Close dialog">Close</ToastAction>,
+    });
     setGameStatus(false);
   };
 
@@ -175,7 +190,9 @@ const Page = () => {
       {gameStatus === false ? (
         <button
           onClick={startGame}
-          className={`${timer < 1 ? "opacity-10 pointer-events-none" : ""} border animate-pulse font-bold w-36 rounded-sm text-sm py-2 px-4`}
+          className={`${
+            timer < 1 ? "opacity-10 pointer-events-none" : ""
+          } border animate-pulse font-bold w-36 rounded-sm text-sm py-2 px-4`}
         >
           Start
         </button>
