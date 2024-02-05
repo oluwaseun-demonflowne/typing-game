@@ -1,5 +1,4 @@
 "use client";
-import Waiting from "@/components/Waiting";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import Avatar, { genConfig } from "react-nice-avatar";
 import { useToast } from "@/components/ui/use-toast";
@@ -8,7 +7,7 @@ import SingleTimer from "@/components/SingleTimer";
 import { useParams } from "next/navigation";
 
 // type Props = {};
-let wordArray = [
+export const  wordArray = [
   "apple",
   "bananas",
   "carrot",
