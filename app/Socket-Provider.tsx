@@ -1,6 +1,5 @@
 "use client"
 import {createContext, useContext, useEffect, useState} from 'react'
-import toast from 'react-hot-toast'
 import {Socket, io} from "socket.io-client"
 
 type SocketContextType = {

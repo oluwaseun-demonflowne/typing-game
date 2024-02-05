@@ -12,9 +12,11 @@ import {
 import { useRouter } from "next/navigation";
 import { v4 as uuid } from "uuid";
 import toast from "react-hot-toast";
+import { useSocket } from "@app/Socket-Provider";
 // import uuid from "uuid"
 
 const Page = () => {
+  const { socket } = useSocket();
   const { replace } = useRouter();
   const [inviteLink, setInviteLink] = useState("");
   const [username, setUsername] = useState("");
@@ -48,6 +50,7 @@ const Page = () => {
     if (category === "Solo") {
       replace(`/game/single/${username}`);
     } else {
+      socket.emit("join_room", {inviteLink,username})
       replace(`/game/multiplayer/${username}`);
     }
   };
