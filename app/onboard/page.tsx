@@ -1,4 +1,5 @@
 "use client";
+import { VscCopy } from "react-icons/vsc";
 import React, { useState } from "react";
 import Avatar, { genConfig } from "react-nice-avatar";
 import {
@@ -23,7 +24,7 @@ const Page = () => {
     setCategory(i);
   };
 
-  const newUuid = uuid();
+  const newUuid = uuid().split("-")[0].substring(0,4);
 
   console.log(inviteLink);
 
@@ -33,8 +34,14 @@ const Page = () => {
       return;
     }
     // &from=${"admin"}
-    setInviteLink(`playgamewith&starter=${username}/${newUuid}`);
+    setInviteLink(`gamewith&player=${username}/${newUuid}`);
   };
+
+  const copyLink = async () => {
+    await navigator.clipboard.writeText(inviteLink);
+    toast.success("Copied successfully")
+  }
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -80,13 +87,22 @@ const Page = () => {
         </SelectContent>
       </Select>
       {category === "Duel" ? (
-        <button
-          onClick={generateLink}
-          type="button"
-          className="border required: rounded-sm py-2 w-64 px-1 text-black outline-none text-sm"
-        >
-          Generate an invite link
-        </button>
+        inviteLink.length > 5 ? (
+          <button
+            type="button"
+            className="flex relative text-wrap border required: rounded-sm py-3 w-64 px-1 text-black outline-none text-xs"
+          >
+            {inviteLink}<VscCopy onClick={copyLink} className="absolute right-2 top-4"/>
+          </button>
+        ) : (
+          <button
+            onClick={generateLink}
+            type="button"
+            className="border required: rounded-sm py-2 w-64 px-1 text-black outline-none text-sm"
+          >
+            Generate an invite link
+          </button>
+        )
       ) : (
         ""
       )}
